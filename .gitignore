@@ -1,4 +1,5 @@
-# Other Stuff to be sure
+# Other Stuff: just to be sure (but most are already below)
+/env
 .env
 conversation.log
 
