@@ -1,0 +1,2 @@
+# Define shortcut for starting the OpenAI script
+alias ask="source /Users/jb/coding/ask_openAI_cli/ask.sh"
