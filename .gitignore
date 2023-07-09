@@ -1,3 +1,8 @@
+# Other Stuff to be sure
+.env
+conversation.log
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
