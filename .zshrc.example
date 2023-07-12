@@ -1,2 +1,2 @@
-# Define shortcut for starting the OpenAI script
+# Define shortcut for starting the OpenAI script (this goes into your .zshrc file (or .bash) in your home (~) directory.)
 alias ask="source /Users/jb/coding/ask_openAI_cli/ask.sh"
