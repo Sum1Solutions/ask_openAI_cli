@@ -17,7 +17,7 @@ then
 fi
 
 # Activate the virtual environment
-#source /Users/jb/coding/ask_openAI_cli/env/bin/activate
+source /Users/jb/coding/ask_openAI_cli/env/bin/activate
 
 # Execute the Python script within the virtual environment
 python3 /Users/jb/coding/ask_openAI_cli/chatbot.py "$*"

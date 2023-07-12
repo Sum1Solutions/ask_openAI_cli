@@ -1,56 +1,44 @@
-# OpenAI Chatbot CLI
+1. Clone the repository:
 
-This project allows you to communicate with an OpenAI-powered chatbot via the command line.
 
-## Setup
+```
+git clone https://github.com/Sum1Solutions/ask_openAI_cli.git
+```
 
-1. Clone the repository to your local machine.
+2. Create a virtual environment and activate it:
 
-2. Install the required dependencies: `openai` and `python-dotenv`. This can be done using pip:
+```
+python3 -m venv myenv
+source myenv/bin/activate
+```
 
-    ```
-    pip install openai python-dotenv
-    ```
+3. Install the required packages:
 
-3. Add your OpenAI API key to a .env file in the project's root directory, like so:
+```
+pip install -r requirements.txt
+```
 
-    ```
-    OPENAI_API_KEY=<Your-API-Key>
-    ```
+4. Create a .env file and add your OpenAI API key:
 
-4. Add execution permission to the shell script:
+```
+OPENAI_API_KEY=your-api-key
+```
 
-    ```
-    chmod +x ask.sh
-    ```
+5. Run the app:
 
-5. Optionally, you can add an alias for the shell script to your shell configuration file (e.g., .bashrc, .zshrc) to easily call the chatbot from anywhere:
+```
+python app.py "Replace HERE with the message you want to send to the LLM, in quotes"
+```
 
-    ```
-    alias ask='/path/to/ask.sh'
-    ```
 
-    Don't forget to source your shell configuration file or restart your terminal after adding the alias.
+6. Get the response:
 
-## Usage
+The app will print the model's response to your message.
 
-After setting up the project, you can interact with the chatbot by typing `ask` followed by your question or command enclosed in double quotes. For example:
+Note: The conversation history is stored in a log file called conversation.log in the same directory as the app. If the log file exists, the app will load the conversation history from the file. Otherwise, it will start a new conversation.
 
-- ask "What's the weather like?"
+You can deactivate the virtual environment when you're done:
 
-The chatbot will respond in the terminal.
-
-### Special Commands
-
-In addition to chatting, this script provides special commands:
-
-- `ask -c "your question"`: This will print the current conversation history and proceed with your new question.
-- `ask -x "your question"`: This will delete the conversation history and proceed with your new question.
-
-## Notes
-
-This chatbot uses the OpenAI API and the gpt-3.5-turbo model. The conversation history is saved in a file named `conversation.log` in the project's root directory.
-
-OpenAI did the heavy lifting: 
-
-https://chat.openai.com/share/b95a8c63-509b-4b45-bdf0-f696516b0ef7
+```
+deactivate
+```
