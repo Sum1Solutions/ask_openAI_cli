@@ -50,3 +50,7 @@ In addition to chatting, this script provides special commands:
 ## Notes
 
 This chatbot uses the OpenAI API and the gpt-3.5-turbo model. The conversation history is saved in a file named `conversation.log` in the project's root directory.
+
+OpenAI did the heavy lifting: 
+
+https://chat.openai.com/share/b95a8c63-509b-4b45-bdf0-f696516b0ef7
