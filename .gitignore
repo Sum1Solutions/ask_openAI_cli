@@ -6,6 +6,9 @@ __pycache__/
 # Local development settings
 .env
 conversation.log
+Concatenated_files.txt
+concatenate.py
+code_concatenator.py
 
 # Logs
 *.log
