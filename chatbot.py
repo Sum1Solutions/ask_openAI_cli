@@ -3,53 +3,28 @@ import openai
 import sys
 from dotenv import load_dotenv
 import time
-from rich import print as rprint
-from rich.console import Console
-from rich.panel import Panel
-from rich.text import Text
+from yaspin import yaspin
+from colorama import Fore, init
+
+# Initialize colorama
+init(autoreset=True)
 
 # -------------------- Configuration --------------------
 
-# Load environment variables from .env file
 load_dotenv()
-
-# Set OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_KEY")
-
-# Set the log file path
 LOG_FILE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "conversation.log")
 
 # -------------------- Helper Functions --------------------
 
 def type_out(message):
     for letter in message:
-        sys.stdout.write(letter)
-        sys.stdout.flush()
+        if letter == '\n':  # Handle newlines
+            print()
+        else:
+            print(Fore.GREEN + letter, end='', flush=True)  # Using colorama for green text
         time.sleep(0.005)
     print()
-
-def sanitize_input(input_string):
-    """Sanitize the input string by removing certain special characters."""
-    chars_to_remove = ['?', "'"]
-    sanitized_string = ''.join([char for char in input_string if char not in chars_to_remove])
-    return sanitized_string
-
-def print_response(response):
-    """Print the response history in a readable format using 'rich' library."""
-    console = Console()
-
-    # # Indented response
-    # console.print("\nIndented response:", style="bold underline")
-    # console.print(console.indent(response, level=2))
-
-    # Bold color response
-    console.print(f"\nChat GPT-3.5 Turbo Output", style="bold underline")
-    rprint(f"[cyan]{response}[/cyan]")
-
-    # # Panel response
-    # console.print("\nPanel response:", style="bold underline")
-    # panel = Panel(Text(response, justify="center"))
-    # console.print(panel)
 
 # -------------------- Conversation Handling --------------------
 
@@ -76,19 +51,29 @@ def send_message(conversation, message):
     messages = [{"role": "system", "content": "You are a helpful assistant."}]
     messages.extend(conversation)
     
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages
-    )
+    # Check for token length and reset conversation if it's too long
+    total_tokens = sum([len(item['content']) for item in messages])
+    if total_tokens > 3000:
+        conversation = [{"role": "assistant", "content": "Let's continue our conversation."}]
+        messages = [{"role": "system", "content": "You are a helpful assistant."}]
+        messages.extend(conversation)
     
-    assistant_message = response['choices'][0]['message']['content']
+    with yaspin(text="Sending message...", spinner="dots") as spinner:
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=messages
+            )
+            assistant_message = response['choices'][0]['message']['content']
+            spinner.ok("✅")
+        except Exception as e:
+            spinner.fail("❌")
+            raise e
+
+    type_out(f"AI: {assistant_message}")
     
     conversation.append({"role": "AI", "content": assistant_message})
-    
     write_to_log(conversation)
-    
-    print_response(assistant_message)  # Print response in multiple ways
-    
     return assistant_message
 
 # -------------------- Main Function --------------------
@@ -97,8 +82,7 @@ def main():
     """Main function to handle the user's message and print the assistant's response."""
     conversation = load_conversation()
     user_message = " ".join(sys.argv[1:])
-    sanitized_user_message = sanitize_input(user_message)
-    send_message(conversation, sanitized_user_message)
+    send_message(conversation, user_message)
 
 # -------------------- Script Execution --------------------
 
